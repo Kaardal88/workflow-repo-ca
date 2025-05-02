@@ -8,19 +8,16 @@ test.describe("login", () => {
         json: { name: "Test", email: "test@noroff.no" },
       }),
     );
-    // Go to login page
+
     await page.goto("/login/");
 
-    // Fill in form using name attributes
     await page.locator('input[name="email"]').fill(process.env.TEST_USER_EMAIL);
     await page
       .locator('input[name="password"]')
       .fill(process.env.TEST_USER_PASSWORD);
 
-    // Click login
     await page.getByRole("button", { name: "Login" }).click();
 
-    // Check if we see logout button - means we're logged in
     await expect(page.locator("#logoutButton")).toBeVisible();
   });
 
@@ -32,9 +29,7 @@ test.describe("login", () => {
 
     await page.getByRole("button", { name: "Login" }).click();
 
-    // Check for error in message container
     await page.waitForFunction(() => {
-      // Wait until the text appears before running the expect function
       const message = document.querySelector("#message-container");
       return (
         message && message.textContent.includes("Invalid email or password")
